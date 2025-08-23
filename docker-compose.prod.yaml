@@ -1,11 +1,29 @@
 services:
-  backend:
-    build: .
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
     container_name: api-monthly 
     ports:
-      - "8000:8000"
+      - "80:8000"
     env_file:
-      - .env  # variables de entorno
+      - .env.production
     volumes:
       - ./logs:/app/logs  # para persistir logs
     restart: always
+  db:
+    image: postgres
+    restart: always
+    container_name: db-monthly
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    networks:
+        - montly
+
+networks:
+  montly:
+    driver: bridge
