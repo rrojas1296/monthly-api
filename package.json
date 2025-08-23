@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:docker": "docker-compose --env-file .development.env up",
+    "start:docker": "docker-compose -f docker-compose.dev.yaml --env-file .development.env up",
     "prisma:migrate": "prisma migrate dev",
     "prisma:generate": "prisma generate",
     "start:db": "docker-compose up -d",
