@@ -1,5 +1,5 @@
 # Etapa de construcción
-FROM alpine:3.21 AS builder
+FROM node:alpine:3.21 AS builder
 WORKDIR /app
 RUN npm i -g bun
 
@@ -21,7 +21,7 @@ RUN bun run prisma generate
 RUN bun run build
 
 # Etapa de producción
-FROM jarredsumner/bun:alpine
+FROM node:alpine:3.21
 WORKDIR /app
 
 # Instalar librerías necesarias para Prisma
