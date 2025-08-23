@@ -1,0 +1,9 @@
+model OpeningHour {
+  id        String  @id @default(uuid())
+  accountId String
+  dayOfWeek Int
+  openTime  String
+  closeTime String
+  isEnabled Boolean @default(true)
+  account   Account @relation(fields: [accountId], references: [id])
+}

@@ -1,0 +1,21 @@
+enum UserProvider {
+  GOOGLE
+  EMAIL
+}
+
+model User {
+  id                 String       @id @default(uuid())
+  email              String       @unique
+  password           String?
+  photoUrl           String?
+  firstName          String?
+  lastName           String?
+  googleRefreshToken String?
+  googleAccessToken  String?
+  hasOnboarding      Boolean      @default(false)
+  deleted            Boolean      @default(false)
+  provider           UserProvider @default(EMAIL)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  account            Account?
+}

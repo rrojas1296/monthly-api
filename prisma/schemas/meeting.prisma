@@ -1,0 +1,23 @@
+model Meeting {
+  id          String           @id @default(uuid())
+  accountId   String
+  name        String
+  type        MeetingType
+  durationMin Int
+  address     String?
+  phone       String?
+  provider    MeetingProvider?
+  deleted     Boolean          @default(false)
+  account     Account          @relation(fields: [accountId], references: [id])
+}
+
+enum MeetingType {
+  IN_PERSON
+  ONLINE
+}
+
+enum MeetingProvider {
+  GOOGLE_MEET
+  ZOOM
+  TEAMS
+}

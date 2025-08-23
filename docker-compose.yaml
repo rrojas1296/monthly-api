@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres
+    container_name: db-monthly
+    shm_size: 120mb
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    networks:
+        - montly
+  api:
+    container_name: api-monthly
+    mem_limit: 2G
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports: 
+      - "8000:8000"
+    command: bun start:dev
+    volumes:
+      - "./:/usr/src/app"
+    env_file:
+      - .development.env
+    depends_on:
+      - db
+    networks:
+        - montly
+
+networks:
+  montly:
+    driver: bridge
