@@ -11,6 +11,8 @@ services:
     volumes:
       - ./logs:/app/logs  # para persistir logs
     restart: always
+    depends_on:
+      - db
   db:
     image: postgres
     restart: always
