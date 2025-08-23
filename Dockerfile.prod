@@ -1,39 +1,36 @@
-# Etapa de construcción
-FROM node:22.18-alpine3.21 AS builder
-WORKDIR /app
+FROM node:lts-alpine AS builder
+
+WORKDIR /usr/src/app
+
 RUN npm i -g bun
 
-# Instalar dependencias de sistema necesarias para Prisma
 RUN apk add --no-cache libc6-compat openssl bash python3 make g++
 
-# Copiar archivos de proyecto
-COPY package.json bun.lock prisma generated ./ 
-COPY tsconfig*.json ./
-COPY src ./src
-
-# Instalar dependencias
-RUN bun install
-
-# Generar Prisma Client
-RUN bun run prisma generate
-
-# Construir NestJS
-RUN bun run build
-
-# Etapa de producción
-
-FROM oven/bun:1.1-alpine
-WORKDIR /app
-
-# Instalar librerías necesarias para Prisma
-RUN apk add --no-cache libc6-compat openssl bash
-
-# Copiar dependencias y build
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/generated ./generated
 COPY package.json bun.lock ./
 
-# Ejecutar la app
+RUN bun install
+
+COPY tsconfig*.json ./
+COPY prisma ./prisma
+COPY src ./src
+
+RUN bunx prisma generate 
+
+RUN bun run build
+
+FROM oven/bun:1 AS production
+
+WORKDIR /usr/src/app
+
+RUN apt-get update && apt-get install -y openssl bash && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/prisma ./prisma
+COPY --from=builder /usr/src/app/generated ./generated
+
+COPY package.json bun.lock ./
+
+EXPOSE 80
+
 CMD ["bun", "run", "start:prod"]

@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres
-    container_name: db-monthly
+    container_name: db-monthly-dev
     shm_size: 120mb
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
@@ -12,7 +12,8 @@ services:
     networks:
         - montly
   api:
-    container_name: api-monthly
+    container_name: api-monthly-dev
+    image: api-monthly-dev
     mem_limit: 2G
     build:
       context: .
@@ -23,7 +24,7 @@ services:
     volumes:
       - "./:/usr/src/app"
     env_file:
-      - .development.env
+      - .env.development
     depends_on:
       - db
     networks:
