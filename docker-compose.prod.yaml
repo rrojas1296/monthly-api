@@ -11,6 +11,8 @@ services:
     volumes:
       - ./logs:/app/logs  # para persistir logs
     restart: always
+    networks:
+      - monthly
     depends_on:
       - db
   db:
@@ -24,8 +26,8 @@ services:
     ports:
       - "5432:5432"
     networks:
-        - montly
+      - monthly
 
 networks:
-  montly:
+  monthly:
     driver: bridge
