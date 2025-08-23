@@ -1,6 +1,7 @@
 # Etapa de construcción
-FROM jarredsumner/bun:alpine AS builder
+FROM alpine:3.21 AS builder
 WORKDIR /app
+RUN npm i -g bun
 
 # Instalar dependencias de sistema necesarias para Prisma
 RUN apk add --no-cache libc6-compat openssl bash python3 make g++
