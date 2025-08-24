@@ -31,6 +31,6 @@ COPY --from=builder /usr/src/app/generated ./generated
 
 COPY package.json bun.lock ./
 
-EXPOSE 80
+EXPOSE 8000
 
 CMD ["bun", "run", "start:prod"]
