@@ -10,7 +10,7 @@ services:
     env_file:
       - .env.production
     volumes:
-      - ./logs:/app/logs  # para persistir logs
+      - ./logs:/app/logs
     restart: always
     networks:
       - monthly

@@ -10,7 +10,8 @@ services:
     ports:
       - "5432:5432"
     networks:
-        - montly
+        - monthly
+
   api:
     container_name: api-monthly-dev
     image: api-monthly-dev
@@ -28,8 +29,8 @@ services:
     depends_on:
       - db
     networks:
-        - montly
+        - monthly
 
 networks:
-  montly:
+  monthly:
     driver: bridge
