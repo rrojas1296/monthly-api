@@ -21,7 +21,7 @@ services:
       dockerfile: Dockerfile.dev
     ports: 
       - "8000:8000"
-    command: bun start:dev
+    command: sh -c "bunx prisma generate && bun start:dev"
     volumes:
       - "./:/usr/src/app"
     env_file:
