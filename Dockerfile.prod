@@ -14,6 +14,7 @@ COPY tsconfig*.json ./
 COPY prisma ./prisma
 COPY src ./src
 
+RUN bunx prisma generate
 RUN bun run build
 
 FROM oven/bun:1 AS production
@@ -25,6 +26,7 @@ RUN apt-get update && apt-get install -y openssl bash && rm -rf /var/lib/apt/lis
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/prisma ./prisma
+COPY --from=builder /usr/src/app/generated ./generated
 
 COPY package.json bun.lock ./
 
